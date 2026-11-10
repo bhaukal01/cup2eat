@@ -1,0 +1,21 @@
+# Dependencies & Build Outputs
+node_modules/
+dist/
+dist-ssr/
+
+# Logs & Environment
+*.log
+npm-debug.log*
+.env
+.env.*
+
+# Editor & OS Files
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,729 @@
+/* Avant-Garde Editorial & Sensory Section Styles */
+
+/* 1. Orbital Poster Hero */
+.orbital-hero {
+  position: relative;
+  min-height: calc(100vh - var(--nav-height) - 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: var(--space-6) var(--space-8);
+  background: radial-gradient(circle at 50% 42%, rgba(198, 156, 83, 0.14), transparent 56%),
+    linear-gradient(180deg, var(--color-cream-50) 0%, var(--color-parchment) 100%);
+  overflow: hidden;
+}
+
+.hero-ghost-watermark {
+  position: absolute;
+  top: 48%;
+  left: -2%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 20vw, 17rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.25px rgba(24, 54, 41, 0.08);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.orbital-stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+  align-items: center;
+  margin-block: auto;
+}
+
+@media (min-width: 960px) {
+  .orbital-stage {
+    grid-template-columns: 1fr minmax(290px, 340px) 1fr;
+    gap: var(--space-6);
+  }
+}
+
+.orbital-left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 3;
+}
+
+.orbital-right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 3;
+}
+
+@media (min-width: 960px) {
+  .orbital-right-col {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.hero-display-split {
+  font-family: var(--font-display);
+  font-size: clamp(2.45rem, 4.4vw, 3.9rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--color-forest-950);
+  margin: 0;
+}
+
+.hero-script-float {
+  font-family: var(--font-script);
+  font-size: clamp(2.25rem, 3.6vw, 3.1rem);
+  color: var(--color-gold-600);
+  font-weight: 700;
+  line-height: 1.05;
+  margin-top: var(--space-2);
+}
+
+/* Central Arch Cup Sculpture Portal */
+.orbital-center-portal {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 900px;
+}
+
+.arch-cup-frame {
+  position: relative;
+  width: min(100%, 336px);
+  aspect-ratio: 4 / 4.35;
+  border-radius: 170px 170px 20px 20px;
+  overflow: hidden;
+  border: 2px solid rgba(198, 156, 83, 0.6);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-forest-950);
+  transform-style: preserve-3d;
+}
+
+.arch-cup-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arch-cup-label {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-3);
+  right: var(--space-3);
+  background: rgba(15, 33, 25, 0.92);
+  color: var(--color-cream-50);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  border: 1px solid rgba(225, 196, 139, 0.35);
+}
+
+.satellite-chip {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .satellite-chip {
+    display: inline-flex;
+    position: absolute;
+    z-index: 5;
+    background: var(--color-cream-50);
+    color: var(--color-forest-950);
+    border: 1px solid var(--color-gold-500);
+    border-radius: var(--radius-pill);
+    padding: 0.45rem 0.95rem;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+    white-space: nowrap;
+  }
+
+  .satellite-chip--top-left {
+    top: 14%;
+    left: -26px;
+  }
+
+  .satellite-chip--bottom-right {
+    bottom: 24%;
+    right: -24px;
+    background: var(--color-forest-900);
+    color: var(--color-gold-300);
+  }
+}
+
+.hero-seal-orbit {
+  position: absolute;
+  top: -14px;
+  right: 4px;
+  z-index: 6;
+  filter: drop-shadow(0 8px 16px rgba(17, 38, 29, 0.25));
+}
+
+.orbital-bottom-ledger {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  padding-top: var(--space-5);
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--color-border-strong);
+}
+
+@media (min-width: 768px) {
+  .orbital-bottom-ledger {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.hero-ledger-item {
+  border-left: 2px solid var(--color-gold-500);
+  padding-left: var(--space-3);
+}
+
+/* 2. Scroll-Pinned Horizontal Lookbook Runway */
+.runway-outer {
+  position: relative;
+  background: linear-gradient(180deg, var(--color-parchment) 0%, var(--color-cream-50) 100%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 960px) {
+  .runway-outer {
+    height: 225vh;
+  }
+}
+
+.runway-sticky {
+  padding-block: var(--space-10);
+}
+
+@media (min-width: 960px) {
+  .runway-sticky {
+    position: sticky;
+    top: var(--nav-height);
+    height: calc(100vh - var(--nav-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-5);
+    padding-block: var(--space-5);
+    overflow: hidden;
+  }
+}
+
+.runway-viewport {
+  overflow: hidden;
+}
+
+.runway-rail {
+  display: flex;
+  gap: var(--space-6);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-3);
+  scrollbar-width: none;
+}
+
+.runway-rail::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .runway-rail {
+    overflow: visible;
+    padding-bottom: 0;
+    will-change: transform;
+    width: max-content;
+  }
+}
+
+.runway-slide {
+  flex: 0 0 min(82vw, 315px);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+@media (min-width: 960px) {
+  .runway-slide {
+    flex: 0 0 clamp(275px, 23vw, 340px);
+  }
+}
+
+.runway-arch-card {
+  position: relative;
+  aspect-ratio: 4 / 3.35;
+  max-height: 36vh;
+  border-radius: 140px 140px 16px 16px;
+  overflow: hidden;
+  background: var(--color-cream-100);
+  box-shadow: var(--shadow-md);
+}
+
+.runway-arch-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.runway-slide:hover .runway-arch-card img {
+  transform: scale(1.05);
+}
+
+/* Anchored safely at crisp 16px bottom-right corner — never clipped by top arch curve */
+.runway-numeral-ghost {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-family: var(--font-display);
+  font-size: 2.35rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(250, 246, 238, 0.94);
+  text-shadow: 0 3px 12px rgba(15, 33, 25, 0.65);
+  pointer-events: none;
+}
+
+.runway-progress-wrap {
+  height: 3px;
+  background: var(--color-border);
+  position: relative;
+  margin-top: var(--space-4);
+}
+
+.runway-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-forest-900), var(--color-gold-500));
+  transform-origin: left center;
+}
+
+/* 3. Scroll-Exploded Cup Anatomy Section */
+.anatomy-grid {
+  display: grid;
+  gap: var(--space-10);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .anatomy-grid {
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: var(--space-12);
+  }
+}
+
+.anatomy-diagram-stage {
+  position: relative;
+  padding: var(--space-8) var(--space-4);
+  background: radial-gradient(circle at 50% 50%, rgba(198, 156, 83, 0.14), transparent 68%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 430px;
+}
+
+.anatomy-layer-row {
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--color-border-strong);
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.anatomy-layer-row:last-child {
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+/* 4. Spec Ledger Grid */
+.spec-ledger-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--color-border-strong);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+@media (min-width: 768px) {
+  .spec-ledger-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.spec-ledger-cell {
+  padding: var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .spec-ledger-cell {
+    border-bottom: none;
+    border-right: 1px solid var(--color-border);
+  }
+  .spec-ledger-cell:last-child {
+    border-right: none;
+  }
+}
+
+/* 5. Sticky Serve Rituals */
+.sticky-ritual-grid {
+  display: grid;
+  gap: var(--space-10);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .sticky-ritual-grid {
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: var(--space-12);
+  }
+}
+
+.sticky-media-column {
+  position: relative;
+}
+
+@media (min-width: 900px) {
+  .sticky-media-column {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-6));
+  }
+}
+
+.sticky-photo-canvas {
+  border-radius: 150px 150px 18px 18px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3.45;
+  max-height: 430px;
+  box-shadow: var(--shadow-lg);
+}
+
+.sticky-photo-canvas img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ritual-chapters {
+  display: flex;
+  flex-direction: column;
+}
+
+.ritual-chapter {
+  padding-block: var(--space-7);
+  border-top: 1px solid var(--color-border-strong);
+  cursor: pointer;
+  transition: opacity var(--transition-base);
+}
+
+.ritual-chapter:last-child {
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.ritual-chapter--dim {
+  opacity: 0.56;
+}
+
+.ritual-chapter--active {
+  opacity: 1;
+}
+
+/* 6. Balanced Asymmetric Catalogue & Unclipped Cards */
+.asymmetric-catalogue-grid {
+  display: grid;
+  gap: var(--space-10) var(--space-8);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 840px) {
+  .asymmetric-catalogue-grid {
+    grid-template-columns: repeat(12, 1fr);
+    align-items: start;
+  }
+
+  .asymmetric-slot--hero {
+    grid-column: span 12;
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: var(--space-8);
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-strong);
+    padding-bottom: var(--space-10);
+  }
+
+  .asymmetric-slot--wide {
+    grid-column: span 7;
+  }
+
+  .asymmetric-slot--wide .product-card-media {
+    aspect-ratio: 16 / 10;
+    border-radius: 28px 28px 14px 14px;
+  }
+
+  .asymmetric-slot--narrow {
+    grid-column: span 5;
+    margin-top: var(--space-5);
+  }
+
+  .asymmetric-slot--narrow .product-card-media {
+    aspect-ratio: 4 / 3.35;
+    border-radius: 120px 120px 14px 14px;
+  }
+}
+
+.products-grid {
+  display: grid;
+  gap: var(--space-8) var(--space-6);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.editorial-product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-strong);
+  padding-bottom: var(--space-5);
+}
+
+.product-card-media {
+  position: relative;
+  aspect-ratio: 4 / 3.35;
+  overflow: hidden;
+  border-radius: 120px 120px 14px 14px;
+  background-color: var(--color-cream-100);
+  margin-bottom: var(--space-4);
+}
+
+.product-card-media--wide {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-xl);
+}
+
+.product-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.editorial-product:hover .product-card-media img,
+.asymmetric-slot--hero:hover .product-card-media img {
+  transform: scale(1.05);
+}
+
+.product-hover-glaze {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(180deg, transparent, rgba(15, 33, 25, 0.92));
+  color: var(--color-cream-50);
+  font-size: var(--text-xs);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.editorial-product:hover .product-hover-glaze,
+.asymmetric-slot--hero:hover .product-hover-glaze {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-card-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+/* 7. Reels Dark Cinema Strip */
+.reels-cinema-grid {
+  display: grid;
+  gap: var(--space-10);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 960px) {
+  .reels-cinema-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.reel-cinema-item {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 560px) {
+  .reel-cinema-item {
+    grid-template-columns: 225px 1fr;
+  }
+}
+
+.reel-video-shell {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(225, 196, 139, 0.35);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-forest-950);
+}
+
+.reel-video-shell video {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.reel-bullets {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: var(--text-sm);
+  color: var(--color-cream-200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* 8. Impact Estimator & Decay Bars */
+.impact-editorial {
+  display: grid;
+  gap: var(--space-10);
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding-block: var(--space-8);
+  border-top: 1px solid var(--color-border-strong);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+@media (min-width: 840px) {
+  .impact-editorial {
+    grid-template-columns: 1fr 1.05fr;
+  }
+}
+
+.impact-stats-strip {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.impact-stat-cell {
+  border-left: 2px solid var(--color-gold-500);
+  padding-left: var(--space-4);
+}
+
+.impact-stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3vw, 2.6rem);
+  font-weight: 600;
+  color: var(--color-forest-900);
+  line-height: 1.05;
+  margin-bottom: var(--space-1);
+}
+
+.decay-bar-track {
+  height: 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-cream-200);
+  overflow: hidden;
+}
+
+.decay-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+}
+
+/* 9. Detail, Catering Timeline & Editorial Chapters */
+.detail-grid {
+  display: grid;
+  gap: var(--space-10);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 0.95fr 1.05fr;
+  }
+}
+
+.detail-photo-sticky {
+  position: relative;
+}
+
+@media (min-width: 900px) {
+  .detail-photo-sticky {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-6));
+  }
+}
+
+.detail-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 150px 150px 20px 20px;
+  box-shadow: var(--shadow-lg);
+}
+
+.two-col-grid {
+  display: grid;
+  gap: var(--space-10);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .two-col-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+
+.editorial-chapter-grid {
+  display: grid;
+  gap: var(--space-8) var(--space-10);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .editorial-chapter-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.editorial-chapter-row {
+  border-top: 1px solid var(--color-border-strong);
+  padding-top: var(--space-5);
+}
+
+/* Catering SVG Scroll Timeline */
+.timeline-scroll-wrap {
+  position: relative;
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: 44px 1fr;
+  align-items: start;
+}
