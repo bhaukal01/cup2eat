@@ -3,6 +3,9 @@ node_modules/
 dist/
 dist-ssr/
 
+# Deployment Platforms
+.vercel/
+
 # Logs & Environment
 *.log
 npm-debug.log*
