@@ -19,7 +19,11 @@ function LookbookSlide({ item, index, addItem }) {
   };
 
   return (
-    <article className="runway-slide">
+    <motion.article
+      className="runway-slide"
+      animate={added ? { y: [0, -6, 0] } : undefined}
+      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+    >
       <div className="runway-arch-card" data-cursor="TASTE">
         <img ref={imgRef} src={item.image} alt={item.alt} loading="lazy" />
         <span className="runway-numeral-ghost" aria-hidden="true">
@@ -51,7 +55,7 @@ function LookbookSlide({ item, index, addItem }) {
           </Button>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
 

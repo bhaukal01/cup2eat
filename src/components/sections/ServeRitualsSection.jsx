@@ -45,7 +45,7 @@ export function ServeRitualsSection() {
       <div className="container">
         <div style={{ marginBottom: 'var(--space-10)' }}>
           <span className="eyebrow">Beyond Disposable Cups</span>
-          <h2 className="section-heading">Sticky Rituals for Every Pour & Table</h2>
+          <h2 className="section-heading">Sticky Rituals for Every Pour &amp; Table</h2>
         </div>
 
         <div className="sticky-ritual-grid">
@@ -80,6 +80,11 @@ export function ServeRitualsSection() {
                   onViewportEnter={() => setActiveIndex(idx)}
                   viewport={{ amount: 0.6 }}
                 >
+                  {/* Mobile-only inline chapter visual (hidden on desktop >= 900px) */}
+                  <div className="ritual-mobile-photo">
+                    <img src={item.image} alt={item.alt} loading="lazy" />
+                  </div>
+
                   <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
                     <span className="editorial-index" style={{ fontSize: 'var(--text-xl)' }}>
                       {item.numeral}

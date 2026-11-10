@@ -223,7 +223,7 @@ export function CateringBulkPage() {
             )}
 
             <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))' }}>
+              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))' }}>
                 <Input
                   id="bulk-name"
                   label="Your Full Name"
@@ -244,7 +244,7 @@ export function CateringBulkPage() {
                 />
               </div>
 
-              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))' }}>
+              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))' }}>
                 <Input
                   id="bulk-email"
                   type="email"
@@ -267,7 +267,7 @@ export function CateringBulkPage() {
                 />
               </div>
 
-              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))' }}>
                 <Select
                   id="bulk-type"
                   label="Use Case"

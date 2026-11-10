@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { calculateImpactMetrics } from '../../utils/calculations';
 import { formatCount } from '../../utils/formatters';
 import { Button } from '../ui';
@@ -28,7 +29,7 @@ export function ImpactCalculator({ compact = false }) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', fontWeight: 600, marginBottom: 'var(--space-1)' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '4px', fontSize: 'var(--text-sm)', fontWeight: 600, marginBottom: 'var(--space-1)' }}>
                 <label htmlFor="daily-cups-range">Cups served per day</label>
                 <span style={{ color: 'var(--color-forest-900)' }}>{formatCount(dailyCups)} cups/day</span>
               </div>
@@ -45,7 +46,7 @@ export function ImpactCalculator({ compact = false }) {
             </div>
 
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-sm)', fontWeight: 600, marginBottom: 'var(--space-1)' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '4px', fontSize: 'var(--text-sm)', fontWeight: 600, marginBottom: 'var(--space-1)' }}>
                 <label htmlFor="days-open-range">Operating / Event days per year</label>
                 <span style={{ color: 'var(--color-forest-900)' }}>{daysOpen} days/year</span>
               </div>
@@ -66,22 +67,61 @@ export function ImpactCalculator({ compact = false }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
           <div className="impact-stats-strip">
             <div className="impact-stat-cell">
-              <div className="impact-stat-num">{formatCount(metrics.cupsReplacedAnnually)}</div>
+              <motion.div
+                key={metrics.cupsReplacedAnnually}
+                initial={{ opacity: 0.65, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="impact-stat-num"
+              >
+                {formatCount(metrics.cupsReplacedAnnually)}
+              </motion.div>
               <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-500)', fontWeight: 600 }}>
                 Disposable Cups Replaced / Yr
               </div>
             </div>
             <div className="impact-stat-cell">
-              <div className="impact-stat-num">{metrics.wasteKgAvoided} kg</div>
+              <motion.div
+                key={metrics.wasteKgAvoided}
+                initial={{ opacity: 0.65, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="impact-stat-num"
+              >
+                {metrics.wasteKgAvoided} kg
+              </motion.div>
               <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-500)', fontWeight: 600 }}>
                 PE-Lined Cup Landfill Saved
               </div>
             </div>
             <div className="impact-stat-cell">
-              <div className="impact-stat-num">{formatCount(metrics.binBagsSaved)}</div>
+              <motion.div
+                key={metrics.binBagsSaved}
+                initial={{ opacity: 0.65, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="impact-stat-num"
+              >
+                {formatCount(metrics.binBagsSaved)}
+              </motion.div>
               <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-500)', fontWeight: 600 }}>
                 Trash Bags Eliminated
               </div>
+            </div>
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-forest-800)', marginBottom: '6px' }}>
+              <span>Plastic Cup Displacement Scale</span>
+              <span>{Math.min(100, Math.round((metrics.cupsReplacedAnnually / 365000) * 100))}% of Max Café Target</span>
+            </div>
+            <div className="decay-bar-track">
+              <motion.div
+                className="decay-bar-fill"
+                style={{ backgroundColor: 'var(--color-forest-900)' }}
+                animate={{ width: `${Math.min(100, Math.max(4, Math.round((metrics.cupsReplacedAnnually / 365000) * 100)))}%` }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              />
             </div>
           </div>
 

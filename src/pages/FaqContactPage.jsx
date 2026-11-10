@@ -126,7 +126,7 @@ export function FaqContactPage() {
                 error={errors.name}
                 placeholder="Rohan Verma"
               />
-              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+              <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))' }}>
                 <Input
                   id="contact-email"
                   type="email"

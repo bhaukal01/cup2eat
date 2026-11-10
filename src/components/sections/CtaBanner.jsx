@@ -34,7 +34,7 @@ export function CtaBanner() {
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
+            <div className="cta-banner-actions">
               <Button to="/catering" variant="secondary" size="lg">
                 <span>Request Wholesale Pricing</span>
                 <ArrowRight size={17} />

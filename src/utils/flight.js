@@ -1,27 +1,53 @@
 /**
- * Pure parabolic Bezier-style waypoint calculation for fly-to-cart projectile animation.
+ * Pure quadratic Bezier curve setup & evaluator for buttery 60fps fly-to-cart motion.
+ * Computing exact Bezier points from a single monotonic progress t in [0, 1] avoids
+ * multi-keyframe segment kinks and yields continuous slow-to-fast acceleration.
  */
-export function computeFlightTrajectory(startRect, endRect, particleSize = 56) {
+export function createFlightCurve(startRect, endRect, particleSize = 56) {
   if (!startRect || !endRect) return null;
 
   const half = particleSize / 2;
-  const startX = startRect.left + startRect.width / 2 - half;
-  const startY = startRect.top + startRect.height / 2 - half;
-  const endX = endRect.left + endRect.width / 2 - half;
-  const endY = endRect.top + endRect.height / 2 - half;
+  const p0 = {
+    x: startRect.left + startRect.width / 2 - half,
+    y: startRect.top + startRect.height / 2 - half,
+  };
+  const p2 = {
+    x: endRect.left + endRect.width / 2 - half,
+    y: endRect.top + endRect.height / 2 - half,
+  };
 
-  const midX = (startX + endX) / 2;
-  // Lift above the higher endpoint for a graceful parabolic arc
-  const highestY = Math.min(startY, endY);
-  const arcOffset = Math.min(140, Math.max(55, Math.abs(startY - endY) * 0.28 + 45));
-  const apexY = Math.max(12, highestY - arcOffset);
+  // Smooth control point angled cleanly toward the cart icon without flying off-screen
+  const dx = p2.x - p0.x;
+  const dy = p2.y - p0.y;
+  const p1 = {
+    x: p0.x + dx * 0.26,
+    y: Math.max(12, Math.min(p0.y, p2.y) + dy * 0.08 - 54),
+  };
 
+  return { p0, p1, p2 };
+}
+
+/**
+ * Evaluate exact (x, y) coordinate along a quadratic Bezier at progress t in [0, 1].
+ */
+export function evaluateBezierPoint(curve, t) {
+  const clamped = Math.max(0, Math.min(1, Number(t) || 0));
+  const inv = 1 - clamped;
   return {
-    x: [startX, midX, endX],
-    y: [startY, apexY, endY],
-    scale: [1, 0.82, 0.28],
-    opacity: [1, 1, 0.2],
-    rotate: [0, -12, 10],
+    x: inv * inv * curve.p0.x + 2 * inv * clamped * curve.p1.x + clamped * clamped * curve.p2.x,
+    y: inv * inv * curve.p0.y + 2 * inv * clamped * curve.p1.y + clamped * clamped * curve.p2.y,
   };
 }
 
+/**
+ * Smooth scale curve: softly expands out of the simmering cup ripple early, then tapers cleanly into the bag icon.
+ */
+export function evaluateFlightScale(t) {
+  const clamped = Math.max(0, Math.min(1, Number(t) || 0));
+  if (clamped < 0.22) {
+    const u = clamped / 0.22;
+    return 0.52 + 0.52 * (1 - (1 - u) * (1 - u));
+  }
+  const u = (clamped - 0.22) / 0.78;
+  return 1.04 - 0.78 * (u * u);
+}

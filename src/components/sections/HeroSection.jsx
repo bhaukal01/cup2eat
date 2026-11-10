@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ShieldCheck, ArrowRight, ArrowDown } from 'lucide-react';
 import { BRAND } from '../../data/brand';
@@ -10,12 +10,24 @@ import './sections.css';
 
 export function HeroSection() {
   const heroRef = useRef(null);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 960 : true
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 960px)');
+    const onChange = () => setIsDesktop(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   });
 
-  // Dramatic visible multi-plane scroll choreography
+  // Dramatic visible multi-plane scroll choreography on desktop
   const watermarkX = useTransform(scrollYProgress, [0, 1], ['0%', '-24%']);
   const leftWingX = useTransform(scrollYProgress, [0, 1], [0, -56]);
   const rightWingX = useTransform(scrollYProgress, [0, 1], [0, 56]);
@@ -25,13 +37,14 @@ export function HeroSection() {
   const chipLeftY = useTransform(scrollYProgress, [0, 1], [0, -76]);
   const chipRightY = useTransform(scrollYProgress, [0, 1], [0, 72]);
 
-  // Tactile 3D pointer tilt on central cup portal
+  // Tactile 3D pointer tilt on central cup portal (desktop)
   const rawRotateX = useMotionValue(0);
   const rawRotateY = useMotionValue(0);
   const rotateX = useSpring(rawRotateX, { stiffness: 180, damping: 24 });
   const rotateY = useSpring(rawRotateY, { stiffness: 180, damping: 24 });
 
   const handlePointerMove = (e) => {
+    if (!isDesktop) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const normX = (e.clientX - rect.left) / rect.width - 0.5;
     const normY = (e.clientY - rect.top) / rect.height - 0.5;
@@ -52,33 +65,23 @@ export function HeroSection() {
 
       <div className="container">
         <motion.div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            gap: 'var(--space-3)',
-            fontSize: 'var(--text-xs)',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--color-forest-800)',
-            marginBottom: 'var(--space-5)',
-          }}
+          className="hero-top-kicker"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.42, ease: EDITORIAL_EASE }}
         >
-          <ShieldCheck size={16} style={{ color: 'var(--color-forest-900)' }} aria-hidden="true" />
+          <ShieldCheck size={16} style={{ color: 'var(--color-forest-900)', flexShrink: 0 }} aria-hidden="true" />
           <span>{BRAND.fssaiLabel}</span>
           <span aria-hidden="true">·</span>
           <span>{BRAND.ethos}</span>
         </motion.div>
 
         <div className="orbital-stage">
-          {/* Left Typographic Wing — diverges smoothly on scroll */}
-          <motion.div className="orbital-left-col" style={{ x: leftWingX }}>
+          {/* Left Typographic Wing — diverges smoothly on desktop scroll */}
+          <motion.div className="orbital-left-col" style={isDesktop ? { x: leftWingX } : undefined}>
             <TextReveal as="h1" className="hero-display-split" delay={0.04}>
               SIP HOT CHAI.
+              <span className="hero-mobile-second-line"> CRUNCH THE CUP.</span>
             </TextReveal>
             <motion.span
               className="hero-script-float"
@@ -89,6 +92,7 @@ export function HeroSection() {
               {BRAND.tagline}.
             </motion.span>
             <p
+              className="hero-intro-copy"
               style={{
                 fontSize: 'var(--text-base)',
                 color: 'var(--color-ink-700)',
@@ -98,10 +102,12 @@ export function HeroSection() {
             >
               Grain-baked edible cups in Chocolate, Vanilla, Elaichi &amp; ₹20 Chocolate Coated pouches—engineered to hold piping hot drinks cleanly.
             </p>
-            <Button to="/products" size="lg" data-cursor="TASTE">
-              <span>Explore Edible Cups</span>
-              <ArrowRight size={17} aria-hidden="true" />
-            </Button>
+            <div className="hero-desktop-cta">
+              <Button to="/products" size="lg" data-cursor="TASTE">
+                <span>Explore Edible Cups</span>
+                <ArrowRight size={17} aria-hidden="true" />
+              </Button>
+            </div>
           </motion.div>
 
           {/* Center 3D-Tilted & Parallax Arch Window Portal */}
@@ -123,12 +129,11 @@ export function HeroSection() {
               data-cursor="BITE"
               onMouseMove={handlePointerMove}
               onMouseLeave={resetTilt}
-              style={{
-                rotateX,
-                rotateY,
-                scale: archScale,
-                y: archY,
-              }}
+              style={
+                isDesktop
+                  ? { rotateX, rotateY, scale: archScale, y: archY }
+                  : undefined
+              }
             >
               <img
                 src={heroCupsImg}
@@ -142,11 +147,14 @@ export function HeroSection() {
           </div>
 
           {/* Right Typographic Counterweight */}
-          <motion.div className="orbital-right-col" style={{ x: rightWingX }}>
-            <TextReveal as="p" className="hero-display-split" delay={0.1}>
-              CRUNCH THE CUP.
-            </TextReveal>
+          <motion.div className="orbital-right-col" style={isDesktop ? { x: rightWingX } : undefined}>
+            <div className="hero-desktop-only-line">
+              <TextReveal as="p" className="hero-display-split" delay={0.1}>
+                CRUNCH THE CUP.
+              </TextReveal>
+            </div>
             <div
+              className="hero-positioning-tagline"
               style={{
                 fontSize: 'var(--text-xs)',
                 fontWeight: 700,
@@ -159,7 +167,13 @@ export function HeroSection() {
             >
               {BRAND.positioningBar.join(' · ')}
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)', alignItems: 'center' }}>
+            <div className="hero-action-pair">
+              <span className="hero-mobile-primary-btn">
+                <Button to="/products" size="lg" fullWidth>
+                  <span>Explore Edible Cups</span>
+                  <ArrowRight size={17} aria-hidden="true" />
+                </Button>
+              </span>
               <Button to="/catering" variant="outline" size="lg">
                 Café &amp; Party Bulk
               </Button>
@@ -167,7 +181,7 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Hairline Credential Footer Ledger + Scroll Hint */}
+        {/* Hairline Credential Footer Ledger */}
         <div className="orbital-bottom-ledger">
           {BRAND.pillars.map((pillar) => (
             <div key={pillar.id} className="hero-ledger-item">
@@ -184,18 +198,7 @@ export function HeroSection() {
         <motion.div
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            marginTop: 'var(--space-5)',
-            fontSize: 'var(--text-xs)',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'var(--color-forest-800)',
-          }}
+          className="hero-scroll-hint"
         >
           <span>Scroll Down For Sideways Lookbook &amp; Cup Layers</span>
           <ArrowDown size={15} aria-hidden="true" />

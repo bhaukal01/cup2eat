@@ -106,7 +106,7 @@ export function Table({ columns, rows, caption }) {
           {rows.map((row, idx) => (
             <tr key={row.id ?? idx}>
               {columns.map((col) => (
-                <td key={col.key}>
+                <td key={col.key} data-label={col.header}>
                   {col.render ? col.render(row) : row[col.key]}
                 </td>
               ))}
@@ -125,24 +125,35 @@ const ALERT_ICONS = {
   error: AlertCircle,
 };
 
-/** Semantic feedback alert banner. */
+/** Semantic feedback alert banner with clean entrance transition. */
 export function Alert({ tone = 'info', title, children }) {
   const Icon = ALERT_ICONS[tone] || Info;
   return (
-    <div className={`ui-alert ui-alert--${tone}`} role="status">
+    <motion.div
+      className={`ui-alert ui-alert--${tone}`}
+      role="status"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+    >
       <Icon size={18} style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
       <div>
         {title && <strong style={{ display: 'block', marginBottom: '2px' }}>{title}</strong>}
         <div>{children}</div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 /** Intentional empty state communicating what is empty and next action. */
 export function EmptyState({ icon: Icon, title, description, action }) {
   return (
-    <div className="ui-empty">
+    <motion.div
+      className="ui-empty"
+      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+    >
       {Icon && (
         <div className="ui-empty-icon">
           <Icon size={24} aria-hidden="true" />
@@ -155,7 +166,7 @@ export function EmptyState({ icon: Icon, title, description, action }) {
         {description}
       </p>
       {action}
-    </div>
+    </motion.div>
   );
 }
 

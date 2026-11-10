@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import './ui.css';
 
 function FieldWrapper({ id, label, required, helper, error, children }) {
@@ -110,24 +111,44 @@ export function Checkbox({ id, label, checked, onChange, error }) {
   );
 }
 
-/** Accessible pill radio group for selecting packs, capacities, or flavours. */
+/** Accessible pill radio group with smooth spring highlight slide. */
 export function RadioGroup({ name, label, value, onChange, options = [] }) {
   return (
     <div className="ui-field" role="radiogroup" aria-label={label}>
       {label && <span className="ui-label">{label}</span>}
       <div className="ui-radio-group">
-        {options.map((option) => (
-          <label key={option.value} className="ui-radio-pill">
-            <input
-              type="radio"
-              name={name}
-              value={option.value}
-              checked={value === option.value}
-              onChange={() => onChange(option.value)}
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
+        {options.map((option) => {
+          const active = value === option.value;
+          return (
+            <label key={option.value} className="ui-radio-pill">
+              <input
+                type="radio"
+                name={name}
+                value={option.value}
+                checked={active}
+                onChange={() => onChange(option.value)}
+              />
+              <span style={{ position: 'relative', background: active ? 'transparent' : undefined, zIndex: 1 }}>
+                {active && (
+                  <motion.span
+                    layoutId={`radio-pill-${name}`}
+                    transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--color-forest-900)',
+                      borderColor: 'var(--color-forest-900)',
+                      zIndex: -1,
+                      padding: 0,
+                    }}
+                  />
+                )}
+                {option.label}
+              </span>
+            </label>
+          );
+        })}
       </div>
     </div>
   );

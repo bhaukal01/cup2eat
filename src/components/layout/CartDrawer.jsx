@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, ShoppingBag, Copy, Instagram, Leaf, Minus, Plus } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
@@ -31,6 +32,8 @@ export function CartDrawer() {
     }
   };
 
+  const progressPct = Math.min(100, Math.round((summary.subtotal / FREE_SHIPPING_THRESHOLD) * 100));
+
   return (
     <>
       <Drawer
@@ -62,7 +65,7 @@ export function CartDrawer() {
                 <span>{formatINR(summary.total)}</span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-2)' }}>
+              <div className="cart-drawer-actions">
                 <Button variant="outline" size="sm" onClick={handleCopyInquiry}>
                   <Copy size={15} /> Copy DM Order
                 </Button>
@@ -105,6 +108,14 @@ export function CartDrawer() {
             {summary.freeShippingRemaining > 0 ? (
               <Alert tone="info" title="Free Shipping Progress">
                 Add {formatINR(summary.freeShippingRemaining)} more to unlock free pan-India shipping (above {formatINR(FREE_SHIPPING_THRESHOLD)}).
+                <div style={{ height: '5px', background: 'rgba(29,74,58,0.14)', borderRadius: '99px', overflow: 'hidden', marginTop: '8px' }}>
+                  <motion.div
+                    style={{ height: '100%', background: 'var(--color-forest-900)', borderRadius: '99px' }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progressPct}%` }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                </div>
               </Alert>
             ) : (
               <Alert tone="success" title="Free Shipping Unlocked">
@@ -113,55 +124,72 @@ export function CartDrawer() {
             )}
 
             <div style={{ marginTop: 'var(--space-5)' }}>
-              {items.map((item) => (
-                <div key={item.key} className="cart-item-row">
-                  <img src={item.image} alt={item.productName} className="cart-item-thumb" />
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-                      <strong style={{ fontSize: 'var(--text-sm)' }}>{item.productName}</strong>
-                      <button
-                        type="button"
-                        onClick={() => removeItem(item.key)}
-                        aria-label={`Remove ${item.productName}`}
-                        style={{
-                          border: 'none',
-                          background: 'transparent',
-                          cursor: 'pointer',
-                          color: 'var(--color-ink-500)',
-                          padding: '2px',
-                        }}
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-500)', margin: '2px 0 8px' }}>
-                      {item.packLabel} · {item.capacity} · {formatINR(item.unitPrice)}/cup
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div className="qty-stepper" aria-label={`Quantity for ${item.productName}`}>
+              <AnimatePresence initial={false}>
+                {items.map((item, idx) => (
+                  <motion.div
+                    key={item.key}
+                    layout
+                    initial={{ opacity: 0, y: 24, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 28, transition: { duration: 0.2 } }}
+                    transition={{ type: 'spring', stiffness: 360, damping: 26, delay: idx * 0.05 }}
+                    className="cart-item-row"
+                  >
+                    <img src={item.image} alt={item.productName} className="cart-item-thumb" />
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
+                        <strong style={{ fontSize: 'var(--text-sm)' }}>{item.productName}</strong>
                         <button
                           type="button"
-                          aria-label="Decrease boxes"
-                          onClick={() => updateBoxes(item.key, item.boxes - 1)}
+                          onClick={() => removeItem(item.key)}
+                          aria-label={`Remove ${item.productName}`}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: 'pointer',
+                            color: 'var(--color-ink-500)',
+                            padding: '2px',
+                          }}
                         >
-                          <Minus size={13} />
-                        </button>
-                        <span>{item.boxes}</span>
-                        <button
-                          type="button"
-                          aria-label="Increase boxes"
-                          onClick={() => updateBoxes(item.key, item.boxes + 1)}
-                        >
-                          <Plus size={13} />
+                          <Trash2 size={15} />
                         </button>
                       </div>
-                      <strong style={{ fontSize: 'var(--text-sm)' }}>
-                        {formatINR(item.packTotal * item.boxes)}
-                      </strong>
+                      <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-ink-500)', margin: '2px 0 8px' }}>
+                        {item.packLabel} · {item.capacity} · {formatINR(item.unitPrice)}/cup
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div className="qty-stepper" aria-label={`Quantity for ${item.productName}`}>
+                          <button
+                            type="button"
+                            aria-label="Decrease boxes"
+                            onClick={() => updateBoxes(item.key, item.boxes - 1)}
+                          >
+                            <Minus size={13} />
+                          </button>
+                          <motion.span
+                            key={item.boxes}
+                            initial={{ scale: 1.25 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.18 }}
+                          >
+                            {item.boxes}
+                          </motion.span>
+                          <button
+                            type="button"
+                            aria-label="Increase boxes"
+                            onClick={() => updateBoxes(item.key, item.boxes + 1)}
+                          >
+                            <Plus size={13} />
+                          </button>
+                        </div>
+                        <strong style={{ fontSize: 'var(--text-sm)' }}>
+                          {formatINR(item.packTotal * item.boxes)}
+                        </strong>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
 
             <div
@@ -213,4 +241,3 @@ export function CartDrawer() {
     </>
   );
 }
-

@@ -86,7 +86,7 @@ export function ProductsPage() {
               ariaLabel="Filter edible cups by flavour category"
             />
 
-            <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+            <div style={{ display: 'grid', gap: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))' }}>
               <Input
                 id="product-search"
                 label="Search flavour or beverage pairing"

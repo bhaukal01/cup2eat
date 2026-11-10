@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import './sections.css';
 
@@ -27,19 +27,31 @@ const ANATOMY_LAYERS = [
 
 /**
  * Interactive scroll-driven exploded cutaway of a CUP2EAT edible biscuit cup.
- * As you scroll through this section, the 4 SVG cup layers separate markedly in vertical depth.
+ * Adapts spread range gently on narrow viewports so layers stay crisp without clipping adjacent text.
  */
 export function CupAnatomySection() {
   const sectionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 640 : false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)');
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
 
-  const rimY = useTransform(scrollYProgress, [0.15, 0.78], [16, -64]);
-  const wallY = useTransform(scrollYProgress, [0.15, 0.78], [6, -20]);
-  const barrierY = useTransform(scrollYProgress, [0.15, 0.78], [-4, 22]);
-  const baseY = useTransform(scrollYProgress, [0.15, 0.78], [-12, 66]);
+  const rimY = useTransform(scrollYProgress, [0.15, 0.78], isMobile ? [10, -34] : [16, -64]);
+  const wallY = useTransform(scrollYProgress, [0.15, 0.78], isMobile ? [4, -10] : [6, -20]);
+  const barrierY = useTransform(scrollYProgress, [0.15, 0.78], isMobile ? [-2, 12] : [-4, 22]);
+  const baseY = useTransform(scrollYProgress, [0.15, 0.78], isMobile ? [-8, 36] : [-12, 66]);
 
   return (
     <section ref={sectionRef} className="section section--surface">
@@ -52,7 +64,10 @@ export function CupAnatomySection() {
 
         <div className="anatomy-grid">
           <div className="anatomy-diagram-stage" aria-label="Exploded layered biscuit cup illustration">
-            <svg width="320" height="335" viewBox="0 0 320 335" style={{ overflow: 'visible' }}>
+            <svg
+              viewBox="0 0 320 335"
+              style={{ width: '100%', maxWidth: '320px', height: 'auto', overflow: 'visible' }}
+            >
               {/* Layer 4: Zero-Waste Crunch Base */}
               <motion.g style={{ y: baseY }}>
                 <ellipse cx="160" cy="252" rx="70" ry="20" fill="#183629" stroke="#C69C53" strokeWidth="2.5" />

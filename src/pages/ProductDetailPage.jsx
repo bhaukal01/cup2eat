@@ -90,13 +90,13 @@ export function ProductDetailPage() {
                   rawRotY.set(0);
                 }}
               >
-                <div style={{ position: 'absolute', top: '-16px', right: '-10px', zIndex: 5 }}>
+                <div className="detail-seal-float">
                   <BrandLogo size={64} />
                 </div>
                 <img ref={photoRef} src={product.image} alt={product.alt} className="detail-photo" data-cursor="BITE" />
               </motion.div>
 
-              <div className="orbital-bottom-ledger" style={{ marginTop: 'var(--space-6)', gridTemplateColumns: '1fr 1fr' }}>
+              <div className="orbital-bottom-ledger" style={{ marginTop: 'var(--space-6)', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))' }}>
                 <div className="hero-ledger-item">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontWeight: 700, fontSize: 'var(--text-sm)', marginBottom: '2px' }}>
                     <Flame size={15} style={{ color: 'var(--color-warning-fg)' }} /> Hot Hold Time
@@ -174,7 +174,7 @@ export function ProductDetailPage() {
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', marginBottom: 'var(--space-3)' }}>
                   Best Beverage &amp; Dessert Pairings
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: 'var(--space-2)', marginBottom: 'var(--space-4)' }}>
                   {product.pairings.map((pairing) => (
                     <div key={pairing} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
                       <CheckCircle2 size={15} style={{ color: 'var(--color-success-fg)' }} />

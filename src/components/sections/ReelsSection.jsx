@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Instagram, ArrowUpRight } from 'lucide-react';
 import { REELS } from '../../data/reels';
@@ -9,12 +9,24 @@ import './sections.css';
 
 export function ReelsSection() {
   const sectionRef = useRef(null);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 960 : true
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 960px)');
+    const sync = () => setIsDesktop(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
 
-  // Opposing vertical drift between the two reel frames
+  // Opposing vertical drift on side-by-side desktop columns only
   const reelLeftY = useTransform(scrollYProgress, [0, 1], [24, -26]);
   const reelRightY = useTransform(scrollYProgress, [0, 1], [-24, 26]);
 
@@ -45,7 +57,7 @@ export function ReelsSection() {
               <motion.article
                 key={reel.id}
                 className="reel-cinema-item"
-                style={{ y: idx % 2 === 0 ? reelLeftY : reelRightY }}
+                style={isDesktop ? { y: idx % 2 === 0 ? reelLeftY : reelRightY } : undefined}
               >
                 <div className="reel-video-shell" data-cursor="WATCH">
                   <video

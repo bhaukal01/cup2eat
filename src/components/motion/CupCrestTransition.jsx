@@ -5,13 +5,13 @@ import { useLenis } from 'lenis/react';
 import { BrandLogo } from '../layout/BrandLogo';
 
 const ROUTE_CHAPTERS = [
-  { match: (p) => p === '/', code: '01', label: 'EAT YOUR DRINK' },
-  { match: (p) => p === '/products', code: '02', label: 'EDIBLE CUPS CATALOGUE' },
-  { match: (p) => p.startsWith('/products/'), code: '02', label: 'FLAVOUR EDITION' },
-  { match: (p) => p.startsWith('/catering'), code: '03', label: 'CATERING & WHOLESALE' },
-  { match: (p) => p.startsWith('/sustainability'), code: '04', label: 'ZERO PLASTIC IMPACT' },
-  { match: (p) => p.startsWith('/about'), code: '05', label: 'OUR STORY & REELS' },
-  { match: (p) => p.startsWith('/contact'), code: '06', label: 'FAQ & ORDER CONCIERGE' },
+  { match: (p) => p === '/', code: '01', label: 'HOME' },
+  { match: (p) => p === '/products', code: '02', label: 'CUPS' },
+  { match: (p) => p.startsWith('/products/'), code: '02', label: 'FLAVOUR' },
+  { match: (p) => p.startsWith('/catering'), code: '03', label: 'BULK' },
+  { match: (p) => p.startsWith('/sustainability'), code: '04', label: 'PLANET' },
+  { match: (p) => p.startsWith('/about'), code: '05', label: 'STORY' },
+  { match: (p) => p.startsWith('/contact'), code: '06', label: 'CONTACT' },
 ];
 
 function getChapterMeta(pathname) {
@@ -21,8 +21,8 @@ function getChapterMeta(pathname) {
 
 /**
  * Route-Change Page Transition ONLY (never fires on direct page load).
- * Sweeps a crisp deep-forest & brushed-gold horizontal chai curtain left-to-right (~440ms total).
- * Uses stable refs so route state updates never prematurely cancel timers or lock Lenis scroll.
+ * Paced comfortably (~800ms total with 260ms hold window) and displays a single crisp keyword
+ * so users easily read the incoming route before the forest-pine curtain sweeps clean.
  */
 export function CupCrestTransition({ children }) {
   const location = useLocation();
@@ -30,7 +30,7 @@ export function CupCrestTransition({ children }) {
   const shouldReduceMotion = useReducedMotion();
 
   const [displayLocation, setDisplayLocation] = useState(location);
-  const [phase, setPhase] = useState('idle'); // 'idle' | 'covering' | 'revealing'
+  const [phase, setPhase] = useState('idle'); // 'idle' | 'covering' | 'holding' | 'revealing'
 
   const displayedPathRef = useRef(location.pathname);
   const locationRef = useRef(location);
@@ -75,23 +75,27 @@ export function CupCrestTransition({ children }) {
 
     setPhase('covering');
 
-    const swapTimer = window.setTimeout(() => {
+    const holdTimer = window.setTimeout(() => {
       displayedPathRef.current = locationRef.current.pathname;
       setDisplayLocation(locationRef.current);
       snapTopAndResize();
+      setPhase('holding');
+    }, 270);
+
+    const revealTimer = window.setTimeout(() => {
       setPhase('revealing');
-    }, 220);
+    }, 530);
 
     const endTimer = window.setTimeout(() => {
       setPhase('idle');
       lenisRef.current?.resize();
-    }, 470);
+    }, 810);
 
     const resizeLateTimer = window.setTimeout(() => {
       lenisRef.current?.resize();
-    }, 750);
+    }, 1050);
 
-    timersRef.current = [swapTimer, endTimer, resizeLateTimer];
+    timersRef.current = [holdTimer, revealTimer, endTimer, resizeLateTimer];
 
     return () => {
       timersRef.current.forEach((t) => clearTimeout(t));
@@ -103,8 +107,8 @@ export function CupCrestTransition({ children }) {
   return (
     <>
       <motion.div
-        animate={{ opacity: phase === 'covering' ? 0.65 : 1 }}
-        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        animate={{ opacity: phase === 'covering' || phase === 'holding' ? 0.6 : 1 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
       >
         {children(displayLocation)}
       </motion.div>
@@ -115,16 +119,20 @@ export function CupCrestTransition({ children }) {
             key={`wave-${location.pathname}`}
             className="route-wave-curtain"
             initial={{ x: '-108%' }}
-            animate={phase === 'covering' ? { x: '-4%' } : { x: '108%' }}
+            animate={
+              phase === 'covering' || phase === 'holding'
+                ? { x: '-4%' }
+                : { x: '108%' }
+            }
             transition={{
-              duration: 0.22,
+              duration: phase === 'revealing' ? 0.28 : 0.27,
               ease: [0.65, 0, 0.35, 1],
             }}
           >
             <div className="crest-transition-center">
-              <BrandLogo size={68} />
+              <BrandLogo size={72} />
               <div className="crest-transition-chapter">
-                <span>CHAPTER {chapter.code}</span>
+                <span>{chapter.code}</span>
                 <strong>{chapter.label}</strong>
               </div>
             </div>

@@ -45,7 +45,7 @@ export function AboutPage() {
               At {BRAND.name}, we bake crisp, grain-rich biscuit cups in four real flavours—<strong>Chocolate, Vanilla, Elaichi, and ₹20 Chocolate Coated</strong>—giving cafés, caterers, and home hosts an unforgettable edible vessel for hot drinks, cold coffee, and brownies.
             </p>
 
-            <div className="orbital-bottom-ledger" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))' }}>
+            <div className="orbital-bottom-ledger" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))' }}>
               {BRAND.performanceSpecs.map((spec) => (
                 <div key={spec.metric} className="hero-ledger-item">
                   <div style={{ fontSize: 'var(--text-xs)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-forest-800)', marginBottom: '4px' }}>

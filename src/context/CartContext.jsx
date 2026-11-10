@@ -8,10 +8,12 @@ import {
 } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { calculateOrderSummary } from '../utils/calculations';
-import { computeFlightTrajectory } from '../utils/flight';
+import { createFlightCurve } from '../utils/flight';
 import { useToast } from './ToastContext';
 
 const CartContext = createContext(null);
+
+export const FLIGHT_DURATION_MS = 800;
 
 export function CartProvider({ children }) {
   const [items, setItems] = useLocalStorage('cup2eat_order_box_v1', []);
@@ -24,20 +26,23 @@ export function CartProvider({ children }) {
   const launchFlight = useCallback((image, sourceEl) => {
     const endRect = cartTargetRef.current?.getBoundingClientRect();
     const startRect = sourceEl?.getBoundingClientRect?.();
-    const trajectory = computeFlightTrajectory(startRect, endRect);
+    const curve = createFlightCurve(startRect, endRect);
 
-    if (!trajectory || !image) {
+    if (!curve || !image) {
       setCartBumpKey((k) => k + 1);
       return false;
     }
 
     const flightId = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-    setFlights((prev) => [...prev.slice(-4), { id: flightId, image, trajectory }]);
+    setFlights((prev) => [...prev.slice(-4), { id: flightId, image, curve }]);
 
     window.setTimeout(() => {
       setCartBumpKey((k) => k + 1);
+    }, FLIGHT_DURATION_MS - 25);
+
+    window.setTimeout(() => {
       setFlights((prev) => prev.filter((f) => f.id !== flightId));
-    }, 520);
+    }, FLIGHT_DURATION_MS + 60);
 
     return true;
   }, []);

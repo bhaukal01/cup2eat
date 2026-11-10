@@ -497,11 +497,30 @@
 }
 
 .editorial-product {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border-strong);
   padding-bottom: var(--space-5);
+}
+
+.editorial-product::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background-color: var(--color-gold-500);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.editorial-product:hover::after {
+  transform: scaleX(1);
 }
 
 .product-card-media {
@@ -626,7 +645,7 @@
 .impact-stats-strip {
   display: grid;
   gap: var(--space-5);
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
 }
 
 .impact-stat-cell {
@@ -726,4 +745,262 @@
   gap: var(--space-8);
   grid-template-columns: 44px 1fr;
   align-items: start;
+}
+
+/* Desktop defaults for responsive helpers */
+.hero-top-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-forest-800);
+  margin-bottom: var(--space-5);
+}
+
+.hero-mobile-second-line,
+.hero-mobile-primary-btn,
+.ritual-mobile-photo {
+  display: none;
+}
+
+.hero-action-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.hero-scroll-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-5);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-forest-800);
+}
+
+.cta-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.detail-seal-float {
+  position: absolute;
+  top: -16px;
+  right: -10px;
+  z-index: 5;
+}
+
+/* ============================================================================
+   MOBILE & TABLET RESPONSIVE OVERRIDES ONLY
+   Desktop (>= 960px / >= 1024px) layouts remain completely untouched above.
+   ============================================================================ */
+
+@media (max-width: 959px) {
+  .orbital-hero {
+    min-height: auto;
+    padding-block: var(--space-5) var(--space-8);
+  }
+
+  .hero-top-kicker {
+    justify-content: center;
+    text-align: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .orbital-stage {
+    gap: var(--space-5);
+  }
+
+  .orbital-left-col,
+  .orbital-right-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-mobile-second-line {
+    display: inline;
+  }
+
+  .hero-desktop-only-line,
+  .hero-desktop-cta,
+  .hero-scroll-hint {
+    display: none;
+  }
+
+  .hero-mobile-primary-btn {
+    display: block;
+    width: 100%;
+  }
+
+  .hero-intro-copy {
+    margin-inline: auto !important;
+    margin-bottom: var(--space-2) !important;
+    max-width: 44ch !important;
+  }
+
+  .hero-positioning-tagline {
+    margin-top: 0 !important;
+    margin-bottom: var(--space-4) !important;
+  }
+
+  .hero-action-pair {
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .hero-action-pair .ui-btn {
+    width: 100%;
+  }
+
+  .arch-cup-frame {
+    width: min(100%, 300px);
+    aspect-ratio: 4 / 3.9;
+    border-radius: 150px 150px 18px 18px;
+  }
+
+  .hero-seal-orbit {
+    top: -10px;
+    right: -4px;
+  }
+
+  .hero-seal-orbit svg {
+    width: 58px;
+    height: 58px;
+  }
+
+  /* Horizontal Lookbook Mobile Swipe */
+  .runway-sticky {
+    padding-block: var(--space-8);
+  }
+
+  .runway-rail {
+    margin-inline: calc(var(--space-4) * -1);
+    padding-inline: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .runway-slide {
+    flex: 0 0 78vw;
+    max-width: 320px;
+  }
+
+  .runway-arch-card {
+    aspect-ratio: 4 / 3.1;
+    max-height: none;
+    min-height: 195px;
+    border-radius: 96px 96px 14px 14px;
+  }
+
+  .runway-progress-wrap {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .sticky-media-column {
+    display: none;
+  }
+
+  .ritual-chapter {
+    opacity: 1 !important;
+    padding-block: var(--space-5);
+  }
+
+  .ritual-mobile-photo {
+    display: block;
+    margin-bottom: var(--space-4);
+    border-radius: 90px 90px 16px 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ritual-mobile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .detail-photo {
+    aspect-ratio: 16 / 11;
+    max-height: 360px;
+    border-radius: 80px 80px 16px 16px;
+  }
+}
+
+@media (max-width: 639px) {
+  .orbital-bottom-ledger {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .hero-ghost-watermark {
+    font-size: 5.5rem;
+  }
+
+  .anatomy-diagram-stage {
+    min-height: 340px;
+    padding: var(--space-4) 0;
+  }
+
+  .products-grid {
+    grid-template-columns: minmax(min(100%, 260px), 1fr);
+  }
+
+  .product-card-media {
+    aspect-ratio: 4 / 3.1;
+    border-radius: 88px 88px 14px 14px;
+  }
+
+  .product-hover-glaze {
+    display: none;
+  }
+
+  .detail-seal-float {
+    top: 8px;
+    right: 8px;
+  }
+
+  .detail-seal-float svg {
+    width: 52px;
+    height: 52px;
+  }
+
+  .timeline-scroll-wrap {
+    grid-template-columns: 32px 1fr;
+    gap: var(--space-4);
+  }
+
+  .cta-banner-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .cta-banner-actions .ui-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 559px) {
+  .reel-video-shell {
+    max-width: 295px;
+    margin-inline: auto;
+  }
+
+  .reel-video-shell video {
+    max-height: 430px;
+  }
 }

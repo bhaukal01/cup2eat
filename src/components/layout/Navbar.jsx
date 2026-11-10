@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingBag } from 'lucide-react';
 import { NAV_LINKS } from '../../data/navigation';
 import { BRAND } from '../../data/brand';
@@ -13,12 +13,16 @@ export function Navbar() {
   const { summary, setDrawerOpen, cartTargetRef, cartBumpKey } = useCart();
   const location = useLocation();
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   return (
     <header className="site-header">
       <div className="site-announcement">
         <span>
-          <strong>{BRAND.fssaiLabel}</strong> · 100% Edible · Pure Veg · Vegan Friendly ·{' '}
-          <span>{BRAND.positioningBar.join(' | ')}</span>
+          <strong>{BRAND.fssaiLabel}</strong> · 100% Edible · Pure Veg · Vegan Friendly
+          <span className="announcement-extra"> · {BRAND.positioningBar.join(' | ')}</span>
         </span>
       </div>
 
@@ -68,20 +72,30 @@ export function Navbar() {
 
         <div className="site-nav-actions">
           <motion.button
-            ref={cartTargetRef}
-            key={cartBumpKey}
             type="button"
             className="cart-trigger"
-            initial={cartBumpKey > 0 ? { scale: 1.18 } : { scale: 1 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 460, damping: 18 }}
+            animate={cartBumpKey > 0 ? { scale: [1, 1.14, 0.96, 1] } : undefined}
+            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setDrawerOpen(true)}
             aria-label={`Open Order Box with ${summary.totalBoxes} packs`}
           >
-            <ShoppingBag size={16} aria-hidden="true" />
-            <span>Order Box</span>
-            <span className="cart-count-pill">{summary.totalBoxes}</span>
+            <span
+              ref={cartTargetRef}
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <ShoppingBag size={16} aria-hidden="true" />
+            </span>
+            <span className="cart-trigger-label">Order Box</span>
+            <motion.span
+              key={cartBumpKey}
+              initial={cartBumpKey > 0 ? { scale: 1.45 } : { scale: 1 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 480, damping: 18 }}
+              className="cart-count-pill"
+            >
+              {summary.totalBoxes}
+            </motion.span>
           </motion.button>
 
           <button
@@ -96,23 +110,39 @@ export function Navbar() {
         </div>
       </div>
 
-      {mobileOpen && (
-        <nav className="mobile-drawer-nav" aria-label="Mobile Navigation">
-          {NAV_LINKS.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.path === '/'}
-              onClick={() => setMobileOpen(false)}
-              className={({ isActive }) =>
-                `site-nav-link ${isActive ? 'site-nav-link--active' : ''}`.trim()
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            className="mobile-drawer-nav"
+            aria-label="Mobile Navigation"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            {NAV_LINKS.map((item, idx) => (
+              <motion.div
+                key={item.path}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.24, delay: idx * 0.03 }}
+              >
+                <NavLink
+                  to={item.path}
+                  end={item.path === '/'}
+                  onClick={() => setMobileOpen(false)}
+                  className={({ isActive }) =>
+                    `site-nav-link ${isActive ? 'site-nav-link--active' : ''}`.trim()
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              </motion.div>
+            ))}
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

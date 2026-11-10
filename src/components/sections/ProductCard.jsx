@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ShoppingBag, ArrowRight, Check } from 'lucide-react';
 import { formatINR } from '../../utils/formatters';
 import { useCart } from '../../context/CartContext';
@@ -68,7 +69,11 @@ export function ProductCard({ product, variant = 'standard', index }) {
   }
 
   return (
-    <article className="editorial-product">
+    <motion.article
+      className="editorial-product"
+      animate={justAdded ? { y: [0, -6, 0] } : undefined}
+      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+    >
       <div>
         <Link
           to={`/products/${product.id}`}
@@ -119,6 +124,6 @@ export function ProductCard({ product, variant = 'standard', index }) {
           <ArrowRight size={15} />
         </Button>
       </div>
-    </article>
+    </motion.article>
   );
 }
