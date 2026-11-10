@@ -30,7 +30,7 @@ export function Button({
   const content = (
     <>
       {loading && <span className="ui-spinner" aria-hidden="true" />}
-      <span>{children}</span>
+      <span className="ui-btn-inner">{children}</span>
     </>
   );
 

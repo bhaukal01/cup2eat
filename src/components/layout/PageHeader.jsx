@@ -29,7 +29,7 @@ export function PageHeader({ eyebrow, title, lead, currentPage }) {
             {eyebrow}
           </motion.span>
         )}
-        <TextReveal as="h1" className="page-header-title" delay={0.08}>
+        <TextReveal as="h1" className="page-header-title" delay={0.08} immediate>
           {title}
         </TextReveal>
         {lead && (

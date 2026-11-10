@@ -79,7 +79,7 @@
   --shadow-lg: 0 18px 38px rgba(17, 38, 29, 0.14);
 
   /* Layout */
-  --container-max: 1220px;
+  --container-max: clamp(1220px, 84vw, 1660px);
   --nav-height: 76px;
 
   /* Transitions */

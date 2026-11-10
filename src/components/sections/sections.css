@@ -3,28 +3,34 @@
 /* 1. Orbital Poster Hero */
 .orbital-hero {
   position: relative;
-  min-height: calc(100vh - var(--nav-height) - 24px);
+  min-height: calc(100vh - var(--nav-height) - 28px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding-block: var(--space-6) var(--space-8);
-  background: radial-gradient(circle at 50% 42%, rgba(198, 156, 83, 0.14), transparent 56%),
+  background: radial-gradient(circle at 50% 44%, rgba(198, 156, 83, 0.14), transparent 56%),
     linear-gradient(180deg, var(--color-cream-50) 0%, var(--color-parchment) 100%);
   overflow: hidden;
 }
 
+.orbital-hero > .container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .hero-ghost-watermark {
   position: absolute;
-  top: 48%;
-  left: -2%;
-  transform: translateY(-50%);
+  top: 44%;
+  left: 6%;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(6rem, 20vw, 17rem);
+  font-size: clamp(6rem, 20vw, 22rem);
   line-height: 0.85;
   letter-spacing: -0.04em;
   color: transparent;
-  -webkit-text-stroke: 1.25px rgba(24, 54, 41, 0.08);
+  -webkit-text-stroke: 1.25px rgba(24, 54, 41, 0.075);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
@@ -1002,5 +1008,87 @@
 
   .reel-video-shell video {
     max-height: 430px;
+  }
+}
+
+/* ============================================================================
+   LARGE DISPLAY SCALING (> 1080p / 1440p / 2K / 4K)
+   Keeps mobile (< 960px) and standard laptops (1024px–1400px) unchanged
+   while scaling Hero, Lookbook & Typography proportionally on wide screens.
+   ============================================================================ */
+@media (min-width: 1440px) {
+  .orbital-hero {
+    padding-block: var(--space-10) var(--space-10);
+  }
+
+  .orbital-stage {
+    grid-template-columns: 1fr minmax(380px, 440px) 1fr;
+    gap: var(--space-10);
+  }
+
+  .hero-display-split {
+    font-size: clamp(3.35rem, 4.1vw, 5.15rem);
+  }
+
+  .hero-script-float {
+    font-size: clamp(2.8rem, 3.4vw, 3.9rem);
+  }
+
+  .hero-intro-copy {
+    font-size: clamp(1.1rem, 1.15vw, 1.32rem) !important;
+    max-width: 38ch !important;
+  }
+
+  .arch-cup-frame {
+    width: min(100%, 425px);
+    border-radius: 215px 215px 24px 24px;
+  }
+
+  .hero-seal-orbit {
+    top: -18px;
+    right: -6px;
+  }
+
+  .hero-seal-orbit svg {
+    width: 86px;
+    height: 86px;
+  }
+
+  .satellite-chip {
+    padding: 0.52rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .satellite-chip--top-left {
+    left: -34px;
+  }
+
+  .satellite-chip--bottom-right {
+    right: -34px;
+  }
+
+  .runway-slide {
+    flex: 0 0 clamp(320px, 23vw, 410px);
+  }
+
+  .runway-arch-card {
+    max-height: 42vh;
+  }
+}
+
+@media (min-width: 1850px) {
+  .orbital-stage {
+    grid-template-columns: 1fr minmax(440px, 510px) 1fr;
+    gap: var(--space-12);
+  }
+
+  .arch-cup-frame {
+    width: min(100%, 495px);
+    border-radius: 250px 250px 28px 28px;
+  }
+
+  .hero-seal-orbit svg {
+    width: 98px;
+    height: 98px;
   }
 }

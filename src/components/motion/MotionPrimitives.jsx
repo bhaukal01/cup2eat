@@ -27,8 +27,16 @@ export function ScrollProgressBar() {
 
 /**
  * Masked upward typography reveal mimicking editorial print unveilings.
+ * Supports `immediate` for above-the-fold hero headings so they never pause waiting for intersection.
  */
-export function TextReveal({ children, delay = 0, className = '', as = 'div', style = {} }) {
+export function TextReveal({
+  children,
+  delay = 0,
+  immediate = false,
+  className = '',
+  as = 'div',
+  style = {},
+}) {
   const Component = motion[as] || motion.div;
   return (
     <div style={{ overflow: 'hidden' }}>
@@ -36,8 +44,9 @@ export function TextReveal({ children, delay = 0, className = '', as = 'div', st
         className={className}
         style={style}
         initial={{ y: '100%', opacity: 0 }}
-        whileInView={{ y: '0%', opacity: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
+        animate={immediate ? { y: '0%', opacity: 1 } : undefined}
+        whileInView={immediate ? undefined : { y: '0%', opacity: 1 }}
+        viewport={immediate ? undefined : { once: true, amount: 'some' }}
         transition={{ duration: 0.62, delay, ease: EDITORIAL_EASE }}
       >
         {children}
@@ -84,7 +93,7 @@ export function EditorialReveal({ children, delay = 0, y = 26, className = '', s
       style={style}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.14 }}
+      viewport={{ once: true, amount: 'some' }}
       transition={{ duration: 0.56, delay, ease: EDITORIAL_EASE }}
     >
       {children}
@@ -102,7 +111,7 @@ export function StaggerEditorial({ children, className = '', style = {} }) {
       style={style}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.12 }}
+      viewport={{ once: true, amount: 'some' }}
       variants={{
         hidden: {},
         visible: {

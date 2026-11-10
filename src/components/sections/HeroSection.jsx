@@ -79,7 +79,7 @@ export function HeroSection() {
         <div className="orbital-stage">
           {/* Left Typographic Wing — diverges smoothly on desktop scroll */}
           <motion.div className="orbital-left-col" style={isDesktop ? { x: leftWingX } : undefined}>
-            <TextReveal as="h1" className="hero-display-split" delay={0.04}>
+            <TextReveal as="h1" className="hero-display-split" delay={0.04} immediate>
               SIP HOT CHAI.
               <span className="hero-mobile-second-line"> CRUNCH THE CUP.</span>
             </TextReveal>
@@ -149,7 +149,7 @@ export function HeroSection() {
           {/* Right Typographic Counterweight */}
           <motion.div className="orbital-right-col" style={isDesktop ? { x: rightWingX } : undefined}>
             <div className="hero-desktop-only-line">
-              <TextReveal as="p" className="hero-display-split" delay={0.1}>
+              <TextReveal as="p" className="hero-display-split" delay={0.1} immediate>
                 CRUNCH THE CUP.
               </TextReveal>
             </div>
